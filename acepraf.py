@@ -104,10 +104,10 @@ def deletar_terreno(id):
 
 def create_tables():
     with app.app_context():
-        logging.info("Creating tables...")
         db.create_all()
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    create_tables()  # Cria as tabelas antes de iniciar o servidor
+    with app.app_context():
+        create_tables()  # Cria as tabelas antes de iniciar o servidor
     app.run(debug=True)
