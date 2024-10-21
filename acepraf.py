@@ -101,7 +101,10 @@ def deletar_terreno(id):
         flash('Terreno não encontrado.')
     return redirect(url_for('listar_terrenos_para_deletar'))
 
-if __name__ == '__main__':
+def create_tables():
     with app.app_context():
         db.create_all()
+
+if __name__ == '__main__':
+    create_tables()  # Cria as tabelas antes de iniciar o servidor
     app.run(debug=True)
