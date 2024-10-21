@@ -75,7 +75,7 @@ def cadastro():
 @app.route('/admin/cadastro_usuario', methods=['GET', 'POST'])
 @login_required
 def cadastro_usuario():
-    if request.method == 'POST']:
+    if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         novo_usuario = Usuario(username=username, password=password)
