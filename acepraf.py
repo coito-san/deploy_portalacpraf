@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from modelos import db, Terreno, Usuario  # Importando classes de modelos
+import logging
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///terrenos.db'
@@ -74,7 +75,7 @@ def cadastro():
 @app.route('/admin/cadastro_usuario', methods=['GET', 'POST'])
 @login_required
 def cadastro_usuario():
-    if request.method == 'POST':
+    if request.method == 'POST']:
         username = request.form['username']
         password = request.form['password']
         novo_usuario = Usuario(username=username, password=password)
@@ -103,8 +104,10 @@ def deletar_terreno(id):
 
 def create_tables():
     with app.app_context():
+        logging.info("Creating tables...")
         db.create_all()
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
     create_tables()  # Cria as tabelas antes de iniciar o servidor
     app.run(debug=True)
