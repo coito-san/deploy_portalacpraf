@@ -18,11 +18,6 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return Usuario.query.get(int(user_id))
 
-# Adicionando a função para criar tabelas
-@app.before_first_request
-def create_tables():
-    db.create_all()
-
 @app.route('/')
 def index():
     return redirect(url_for('terrenos'))
@@ -107,6 +102,11 @@ def deletar_terreno(id):
         flash('Terreno não encontrado.')
     return redirect(url_for('listar_terrenos_para_deletar'))
 
+def create_tables():
+    with app.app_context():
+        db.create_all()
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
+    create_tables()  # Cria as tabelas antes de iniciar o servidor
     app.run(debug=True)
