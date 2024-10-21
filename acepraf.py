@@ -8,8 +8,8 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///terrenos.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'supersecretkey'  # Troque para uma chave secreta sua
-db.init_app(app)
 
+db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -17,6 +17,10 @@ login_manager.login_view = 'login'
 @login_manager.user_loader
 def load_user(user_id):
     return Usuario.query.get(int(user_id))
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 @app.route('/')
 def index():
@@ -102,12 +106,6 @@ def deletar_terreno(id):
         flash('Terreno não encontrado.')
     return redirect(url_for('listar_terrenos_para_deletar'))
 
-def create_tables():
-    with app.app_context():
-        db.create_all()
-
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    with app.app_context():
-        create_tables()  # Cria as tabelas antes de iniciar o servidor
     app.run(debug=True)
